@@ -1,7 +1,7 @@
 package br.com.example.juspharus.Controles;
 
-import br.com.example.juspharus.entity.Cliente;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import br.com.example.juspharus.Dto.Request.EnderecoRequestDto;
+import br.com.example.juspharus.Dto.Response.EnderecoResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import br.com.example.juspharus.Dto.Request.ClienteRequestDTO;
 import br.com.example.juspharus.Dto.Response.ClienteResponseDTO;
 import br.com.example.juspharus.Dto.Response.ResponseDTO;
 import br.com.example.juspharus.Service.ClienteService;
-import jakarta.transaction.Transactional;
+
 
 @RestController
 @RequestMapping(value = "/cliente")
@@ -54,5 +54,17 @@ public class ClienteRest {
     @Operation(summary = "Deleta cliente baseado em uma ID")
     public ResponseEntity<ResponseDTO> deleteCliente(@RequestParam Long id) throws Exception{
         return ResponseEntity.ok(service.deleteCliente(id));
+    }
+
+    @PutMapping(value = "/endereco")
+    @Operation(summary = "Cria um novo endereço")
+    public ResponseEntity<EnderecoResponseDTO> updateEndereco(@RequestBody @Validated EnderecoRequestDto enderecoRequestDto , @RequestParam Long id) throws Exception{
+        return ResponseEntity.ok(service.updateEndereco(id, enderecoRequestDto));
+    }
+
+    @DeleteMapping(value = "/endereco/delete")
+    @Operation(summary = "Delete um endereço de um cliente específico")
+    public ResponseEntity<ResponseDTO> deleteEndereco(@RequestParam Long id)throws Exception{
+        return ResponseEntity.ok(service.deleteEndereco(id));
     }
 }
