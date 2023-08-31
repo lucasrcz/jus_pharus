@@ -17,6 +17,8 @@ import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SourceType;
 
 @Entity
 @Table(name = "clientes")
@@ -29,14 +31,24 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
     
-    @Column(name = "nome")
+    @Column(name = "nome", nullable = false , length = 255)
     public String nome;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp(source = SourceType.DB)
     @Column(name = "creation_date", nullable = false, updatable = false)
     private Date creationDate;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "birthday_date")
+    @Column(name = "birthday_date", nullable = false)
     private Date birthdayDate;
+
+    @Column(name = "cpf" , length = 11)
+    private String cpf;
+
+    @Column(name = "telefone" , length = 50)
+    private String telefone;
+    
+    @Column(name = "telefone2" , length = 50 , nullable = true)
+    private String telefone2;
+
 }
