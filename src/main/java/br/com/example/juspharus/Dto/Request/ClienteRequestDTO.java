@@ -5,14 +5,15 @@ import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class ClienteRequestDTO {
     
     @NotBlank(message = "Nome precisar ser preenchido")
@@ -30,6 +31,9 @@ public class ClienteRequestDTO {
 
     @NotBlank(message = "Telefone principal precisa ser preenchido")
     private String telefone;
-    
+
+
     private String telefone2;
+
+    private EnderecoRequestDto endereco;
 }

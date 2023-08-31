@@ -7,11 +7,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.com.example.juspharus.entity.Cliente;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 public class ClienteResponseDTO {
     
@@ -32,6 +34,8 @@ public class ClienteResponseDTO {
     
     private String telefone2;
 
+    private EnderecoResponseDTO endereco;
+
     public ClienteResponseDTO(Cliente cliente){
         this.id = cliente.getId();
         this.nome= cliente.getNome();
@@ -40,5 +44,9 @@ public class ClienteResponseDTO {
         this.cpf = cliente.getCpf();
         this.telefone = cliente.getTelefone();
         this.telefone2 = cliente.getTelefone2();
+        if(cliente.getEndereco() != null){
+            this.endereco = new EnderecoResponseDTO(cliente.getEndereco());
+        }
     }
 }
+
