@@ -1,6 +1,6 @@
 package br.com.example.juspharus.Service;
 
-import br.com.example.juspharus.enums.PerfilEnum;
+import br.com.example.juspharus.enums.UserRole;
 import br.com.example.juspharus.repositories.EnderecoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,7 +104,7 @@ public class UsuarioService {
         usuario.setBirthdayDate(usuarioRequestDTO.getBirthdayDate());
         usuario.setTelefone(usuarioRequestDTO.getTelefone());
         usuario.setTelefone2(usuarioRequestDTO.getTelefone2());
-        usuario.setPerfilEnum(PerfilEnum.valueOf(usuarioRequestDTO.getPerfilEnum()));
+        usuario.setUserRole(UserRole.valueOf(usuarioRequestDTO.getPerfilEnum()));
         return usuario;
     }
 

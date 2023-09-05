@@ -49,7 +49,7 @@ public class ClienteResponseDTO {
         if(usuario.getEndereco() != null){
             this.endereco = new EnderecoResponseDTO(usuario.getEndereco());
         }
-        this.perfil = usuario.getPerfilEnum().getValue();
+        this.perfil = usuario.getUserRole().getRole();
     }
 }
 

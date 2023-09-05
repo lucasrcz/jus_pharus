@@ -2,7 +2,6 @@ package br.com.example.juspharus.Dto.Request;
 
 import java.util.Date;
 
-import br.com.example.juspharus.enums.PerfilEnum;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;

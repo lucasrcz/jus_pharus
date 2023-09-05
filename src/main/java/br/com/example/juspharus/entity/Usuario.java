@@ -6,7 +6,7 @@ package br.com.example.juspharus.entity;
 
 import java.util.Date;
 
-import br.com.example.juspharus.enums.PerfilEnum;
+import br.com.example.juspharus.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -42,7 +42,7 @@ public class Usuario {
     @Column(name = "telefone" , length = 50)
     private String telefone;
     
-    @Column(name = "telefone2" , length = 50 , nullable = true)
+    @Column(name = "telefone2" , length = 50)
     private String telefone2;
 
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
@@ -51,6 +51,6 @@ public class Usuario {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "perfil")
-    private PerfilEnum perfilEnum;
+    private UserRole userRole;
 
 }
