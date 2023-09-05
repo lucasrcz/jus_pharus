@@ -11,59 +11,59 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import br.com.example.juspharus.Dto.Request.ClienteRequestDTO;
+import br.com.example.juspharus.Dto.Request.UsuarioRequestDTO;
 import br.com.example.juspharus.Dto.Response.ClienteResponseDTO;
 import br.com.example.juspharus.Dto.Response.ResponseDTO;
-import br.com.example.juspharus.Service.ClienteService;
+import br.com.example.juspharus.Service.UsuarioService;
 
 
 @RestController
-@RequestMapping(value = "/cliente")
+@RequestMapping(value = "/usuario")
 
-public class ClienteRest {
+public class UsuarioRest {
     
     @Autowired
-    ClienteService service;
+    UsuarioService service;
     
     @PostMapping
-    @Operation(summary = "Cria um novo cliente no banco de dados")
-    public ResponseEntity<ClienteResponseDTO> salvar(@RequestBody @Validated ClienteRequestDTO clienteRequestDTO){
+    @Operation(summary = "Cria um Usuario com perfil de cliente no banco de dados")
+    public ResponseEntity<ClienteResponseDTO> salvar(@RequestBody @Validated UsuarioRequestDTO usuarioRequestDTO){
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.salvar(clienteRequestDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.salvar(usuarioRequestDTO));
     }
 
     @GetMapping
-    @Operation(summary = "Busca um cliente a partir de uma ID válida")
-    public ResponseEntity<ClienteResponseDTO> getCliente(@RequestParam Long clienteId) throws Exception {
-        return ResponseEntity.ok(service.getCliente(clienteId));
+    @Operation(summary = "Busca um Usuario a partir de uma ID válida")
+    public ResponseEntity<ClienteResponseDTO> getUsuario(@RequestParam Long clienteId) throws Exception {
+        return ResponseEntity.ok(service.getUsuario(clienteId));
     }
 
     @GetMapping(value = "/pagination")
-    @Operation(summary = "Mostra uma paginação de todos os clientes no Banco de Dados, ordenado por ordem alfabetica. Aceita parâmetros para controlar a paginação")
+    @Operation(summary = "Mostra uma paginação de todos os Usuarios no Banco de Dados, ordenado por ordem alfabetica. Aceita parâmetros para controlar a paginação")
     public Page<ClienteResponseDTO> getAll(@RequestParam(defaultValue = "0") Integer pageNumber , @RequestParam(defaultValue = "10") Integer pagesize){
         return service.getAll(pageNumber , pagesize);
     }
 
     @PutMapping
-    @Operation(summary = "Atualiza um cliente no banco de dados")
-    public ResponseEntity<ClienteResponseDTO> updateCliente(@RequestBody @Validated ClienteRequestDTO clienteRequestDTO, @RequestParam Long id ) throws Exception{
-        return ResponseEntity.ok(service.updateCliente(id, clienteRequestDTO));
+    @Operation(summary = "Atualiza um usuario no banco de dados")
+    public ResponseEntity<ClienteResponseDTO> updateCliente(@RequestBody @Validated UsuarioRequestDTO usuarioRequestDTO, @RequestParam Long id ) throws Exception{
+        return ResponseEntity.ok(service.updateCliente(id, usuarioRequestDTO));
     }
 
     @DeleteMapping
-    @Operation(summary = "Deleta cliente baseado em uma ID")
+    @Operation(summary = "Deleta Usuario baseado em uma ID")
     public ResponseEntity<ResponseDTO> deleteCliente(@RequestParam Long id) throws Exception{
         return ResponseEntity.ok(service.deleteCliente(id));
     }
 
     @PutMapping(value = "/endereco")
-    @Operation(summary = "Cria um novo endereço")
+    @Operation(summary = "Cria um novo endereço relacionado a um cliente especifico")
     public ResponseEntity<EnderecoResponseDTO> updateEndereco(@RequestBody @Validated EnderecoRequestDto enderecoRequestDto , @RequestParam Long id) throws Exception{
         return ResponseEntity.ok(service.updateEndereco(id, enderecoRequestDto));
     }
 
     @DeleteMapping(value = "/endereco/delete")
-    @Operation(summary = "Delete um endereço de um cliente específico")
+    @Operation(summary = "Delete um endereço de um usuario específico")
     public ResponseEntity<ResponseDTO> deleteEndereco(@RequestParam Long id)throws Exception{
         return ResponseEntity.ok(service.deleteEndereco(id));
     }

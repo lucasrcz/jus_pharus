@@ -20,4 +20,6 @@ public class EnderecoRequestDto {
     @NotBlank(message = "CEP deve ser preenchido")
     public String cep;
 
+
+
 }
