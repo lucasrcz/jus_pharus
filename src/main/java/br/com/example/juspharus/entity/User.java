@@ -30,7 +30,14 @@ public class User implements UserDetails {
 
     private String password;
 
+    @Enumerated(EnumType.STRING)
     private UserRole role;
+
+    public User(String login, String password, String role) {
+        this.login = login;
+        this.password = password;
+        this.role = UserRole.valueOf(role);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

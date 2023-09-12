@@ -34,3 +34,8 @@ VALUES
     ('Rua M', '1010', 'Apto 505', '23456-789', 13),
     ('Rua N', '1111', 'Casa 13', '34567-890', 14),
     ('Rua O', '1212', 'Sala 14', '45678-901', 15);
+
+-- USUARIO
+
+INSERT INTO users(login , password ,role, id) VALUES
+    ('lucas', '123456','ADMIN', 1)
