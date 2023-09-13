@@ -37,7 +37,7 @@ public class SecurityConfigurations {
                         .requestMatchers(mvcMatcherBuilder.pattern("/swagger-ui/**")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/v3/api-docs/**")).permitAll()
                         .anyRequest().authenticated())
-                .headers(headers -> headers.frameOptions().disable())
+                .headers(headers -> headers.frameOptions(header -> headers.disable()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .build();
     }
