@@ -35,7 +35,3 @@ VALUES
     ('Rua N', '1111', 'Casa 13', '34567-890', 14),
     ('Rua O', '1212', 'Sala 14', '45678-901', 15);
 
--- USUARIO
-
-INSERT INTO users(login , password ,role, id) VALUES
-    ('lucas', '123456','ADMIN', 1)
