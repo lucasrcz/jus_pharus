@@ -6,7 +6,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClienteRequestDTO {
+public class    UsuarioRequestDTO {
     
     @NotBlank(message = "Nome precisar ser preenchido")
     public String nome;
@@ -25,9 +24,8 @@ public class ClienteRequestDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private Date birthdayDate;
     
-    @NotBlank(message = "CPF precisa ser preenchido")
-    @Size(min = 11 , message = "CPF precisa ter 11 digitos")
-    private String cpf;
+    @NotBlank(message = "Identificação precisa ser preenchido")
+    private String identificacao;
 
     @NotBlank(message = "Telefone principal precisa ser preenchido")
     private String telefone;
@@ -36,4 +34,7 @@ public class ClienteRequestDTO {
     private String telefone2;
 
     private EnderecoRequestDto endereco;
+
+    @NotBlank(message = "Perfil deve ser declarado")
+    private String perfilEnum;
 }

@@ -6,7 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import br.com.example.juspharus.entity.Cliente;
+import br.com.example.juspharus.entity.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,17 +36,20 @@ public class ClienteResponseDTO {
 
     private EnderecoResponseDTO endereco;
 
-    public ClienteResponseDTO(Cliente cliente){
-        this.id = cliente.getId();
-        this.nome= cliente.getNome();
-        this.birthdayDate = cliente.getBirthdayDate();
-        this.creationDate = cliente.getCreationDate();
-        this.cpf = cliente.getCpf();
-        this.telefone = cliente.getTelefone();
-        this.telefone2 = cliente.getTelefone2();
-        if(cliente.getEndereco() != null){
-            this.endereco = new EnderecoResponseDTO(cliente.getEndereco());
+    private String perfil;
+
+    public ClienteResponseDTO(Usuario usuario){
+        this.id = usuario.getId();
+        this.nome= usuario.getNome();
+        this.birthdayDate = usuario.getBirthdayDate();
+        this.creationDate = usuario.getCreationDate();
+        this.cpf = usuario.getIdentificacao();
+        this.telefone = usuario.getTelefone();
+        this.telefone2 = usuario.getTelefone2();
+        if(usuario.getEndereco() != null){
+            this.endereco = new EnderecoResponseDTO(usuario.getEndereco());
         }
+        this.perfil = usuario.getUserRole().getRole();
     }
 }
 

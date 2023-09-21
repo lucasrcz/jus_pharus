@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class Endereco {
     
     @Id
-    @Column(name = "cliente_id")
+    @Column(name = "usuario_id")
     public Long id;
     @Column(name = "rua")
     public String rua;
@@ -31,6 +31,6 @@ public class Endereco {
     public String cep;
     @OneToOne
     @MapsId
-    @JoinColumn(name = "cliente_id")
-    public Cliente cliente;
+    @JoinColumn(name = "usuario_id")
+    public Usuario usuario;
 }
