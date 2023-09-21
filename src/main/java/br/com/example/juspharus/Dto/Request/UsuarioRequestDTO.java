@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UsuarioRequestDTO {
+public class    UsuarioRequestDTO {
     
     @NotBlank(message = "Nome precisar ser preenchido")
     public String nome;

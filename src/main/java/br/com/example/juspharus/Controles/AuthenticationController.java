@@ -2,8 +2,10 @@ package br.com.example.juspharus.Controles;
 
 import br.com.example.juspharus.Dto.Request.AuthenticationRequestDto;
 import br.com.example.juspharus.Dto.Request.RegisterRequestDTO;
+import br.com.example.juspharus.Dto.Response.ResponseDTO;
 import br.com.example.juspharus.entity.User;
 import br.com.example.juspharus.repositories.UserRepository;
+import br.com.example.juspharus.security.TokenService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +25,15 @@ public class AuthenticationController {
 
     @Autowired
     private UserRepository repository;
+
+    @Autowired
+    private TokenService tokenService;
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationRequestDto authenticationRequestDto){
         var userNamePassword = new UsernamePasswordAuthenticationToken(authenticationRequestDto.getLogin() , authenticationRequestDto.getPassword());
         var auth = this.authenticationManager.authenticate(userNamePassword);
-
-        return ResponseEntity.ok().build();
+        var token = tokenService.generateToken((User) auth.getPrincipal());
+        return ResponseEntity.ok(new ResponseDTO(token));
     }
 
     @PostMapping("/register")

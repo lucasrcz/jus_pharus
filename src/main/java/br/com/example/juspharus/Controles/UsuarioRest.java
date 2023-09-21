@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +35,9 @@ public class UsuarioRest {
 
     @GetMapping("/{id}")
     @Operation(summary = "Busca um Usuario a partir de uma ID válida")
-    public ResponseEntity<ClienteResponseDTO> getUsuario(@PathVariable Long clienteId) throws Exception {
+    public ResponseEntity<ClienteResponseDTO> getUsuario(@PathVariable("id") Long clienteId) throws Exception {
+        System.out.println(SecurityContextHolder.getContext().getAuthentication());
+        jwt.get
         return ResponseEntity.ok(service.getUsuario(clienteId));
     }
 
@@ -52,7 +55,7 @@ public class UsuarioRest {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Deleta Usuario baseado em uma ID")
-    public ResponseEntity<ResponseDTO> deleteCliente(@PathVariable Long id) throws Exception{
+    public ResponseEntity<ResponseDTO> deleteCliente(@PathVariable("id") Long id) throws Exception{
         return ResponseEntity.ok(service.deleteCliente(id));
     }
 
@@ -64,7 +67,7 @@ public class UsuarioRest {
 
     @DeleteMapping(value = "{id}/endereco/delete")
     @Operation(summary = "Delete um endereço de um usuario específico")
-    public ResponseEntity<ResponseDTO> deleteEndereco(@PathVariable Long id)throws Exception{
+    public ResponseEntity<ResponseDTO> deleteEndereco(@PathVariable("id") Long id)throws Exception{
         return ResponseEntity.ok(service.deleteEndereco(id));
     }
 }
