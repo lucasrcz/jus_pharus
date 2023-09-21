@@ -14,7 +14,8 @@ VALUES
     ('Sandra Carvalho', '1980-05-18', '1975-03-14', '123.456.789-01', '234-5678', 'ADVOGADO'),
     ('Roberto Silva', '1989-06-05', '1984-09-07', '987.654.321-02', '345-6789', 'CLIENTE'),
     ('Juliana Santos', '1997-03-22', '1992-06-30', '234.567.890-23', '456-7890', 'ADVOGADO'),
-    ('Gustavo Oliveira', '1991-11-15', '1986-02-18', '345.678.901-34', '567-8901', 'CLIENTE');
+    ('Gustavo Oliveira', '1991-11-15', '1986-02-18', '345.678.901-34', '567-8901', 'CLIENTE'),
+    ('Lucas Regis Catunda', '2023-09-21' , '1995-06-05', '325.984.222.30','3282-4090', 'ADMIN');
 
 -- Insert sample Endereco records associated with Usuarios
 INSERT INTO enderecos (rua, numero, complemento, cep, usuario_id)
@@ -33,5 +34,6 @@ VALUES
     ('Rua L', '909', 'Sala 11', '12345-678', 12),
     ('Rua M', '1010', 'Apto 505', '23456-789', 13),
     ('Rua N', '1111', 'Casa 13', '34567-890', 14),
-    ('Rua O', '1212', 'Sala 14', '45678-901', 15);
+    ('Rua O', '1212', 'Sala 14', '45678-901', 15),
+    ('Av.Dr Freitas', '700' , 'Apto 11' , '45678-901', 16);
 

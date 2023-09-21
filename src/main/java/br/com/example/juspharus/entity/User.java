@@ -33,10 +33,15 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    public User(String login, String password, UserRole role) {
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "usuario_id" , referencedColumnName = "id")
+    private Usuario usuario;
+
+    public User(String login, String password, UserRole role , Usuario usuario) {
         this.login = login;
         this.password = password;
         this.role = role;
+        this.usuario = usuario;
     }
 
     @Override

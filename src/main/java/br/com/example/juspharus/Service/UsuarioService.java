@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.example.juspharus.Dto.Request.UsuarioRequestDTO;
 import br.com.example.juspharus.Dto.Request.EnderecoRequestDto;
-import br.com.example.juspharus.Dto.Response.ClienteResponseDTO;
+import br.com.example.juspharus.Dto.Response.UsuarioResponseDTO;
 import br.com.example.juspharus.Dto.Response.EnderecoResponseDTO;
 import br.com.example.juspharus.Dto.Response.ResponseDTO;
 import br.com.example.juspharus.entity.Usuario;
@@ -32,7 +32,7 @@ public class UsuarioService {
     EnderecoRepository enderecoRepository;
 
     @Transactional
-    public ClienteResponseDTO salvar(UsuarioRequestDTO usuarioRequestDTO){
+    public UsuarioResponseDTO salvar(UsuarioRequestDTO usuarioRequestDTO){
         Usuario usuario = new Usuario();
         if(usuarioRequestDTO.getEndereco() != null){
             usuario.setEndereco(converterEnderecoRequestEmEndereco(usuarioRequestDTO.getEndereco()));
@@ -40,23 +40,27 @@ public class UsuarioService {
         usuario = converteClienteDTORequestemCliente(usuarioRequestDTO);
         repository.save(usuario);
         
-        return new ClienteResponseDTO(usuario);
+        return new UsuarioResponseDTO(usuario);
         
     }
 
 
-    public ClienteResponseDTO getUsuario(Long clienteId) throws Exception {
+    public UsuarioResponseDTO getUsuarioEretornaDTO(Long clienteId) throws Exception {
        Usuario usuario =  repository.findById(clienteId).orElseThrow(() -> new Exception("Digite uma id válida, Usuario não encontrado"));
-       return new ClienteResponseDTO(usuario);
+       return new UsuarioResponseDTO(usuario);
     }
 
-    public Page<ClienteResponseDTO> getAll(Integer pageNumber, Integer pageSize){
+    public Usuario getUsuarioERetornaEntidade(Long clienteId) throws Exception {
+        return repository.findById(clienteId).orElseThrow(() -> new Exception("Digite uma id válida, Usuario não encontrado"));
+    }
+
+    public Page<UsuarioResponseDTO> getAll(Integer pageNumber, Integer pageSize){
         Pageable pageable= PageRequest.of(pageNumber , pageSize , Sort.by("nome"));
-        return repository.findAll(pageable).map(ClienteResponseDTO::new);
+        return repository.findAll(pageable).map(UsuarioResponseDTO::new);
     }
 
     @Transactional
-    public ClienteResponseDTO updateCliente(Long id, UsuarioRequestDTO usuarioRequestDTO) throws Exception{
+    public UsuarioResponseDTO updateCliente(Long id, UsuarioRequestDTO usuarioRequestDTO) throws Exception{
         Usuario usuario =  repository.findById(id).orElseThrow(() -> new Exception("Digite uma id válida, Usuario não encontrado"));
         usuario.setNome(usuarioRequestDTO.getNome());
         usuario.setTelefone(usuarioRequestDTO.getTelefone());
@@ -64,7 +68,7 @@ public class UsuarioService {
         usuario.setIdentificacao(usuarioRequestDTO.getIdentificacao());
         repository.save(usuario);
         
-        return new ClienteResponseDTO(usuario);
+        return new UsuarioResponseDTO(usuario);
     }
 
     @Transactional

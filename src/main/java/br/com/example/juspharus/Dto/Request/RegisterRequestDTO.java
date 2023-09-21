@@ -20,4 +20,6 @@ public class RegisterRequestDTO {
     @Enumerated(EnumType.STRING)
     UserRole role;
 
+    UsuarioRequestDTO usuarioRequestDTO;
+
 }

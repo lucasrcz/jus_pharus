@@ -3,7 +3,10 @@ package br.com.example.juspharus.Controles;
 import br.com.example.juspharus.Dto.Request.AuthenticationRequestDto;
 import br.com.example.juspharus.Dto.Request.RegisterRequestDTO;
 import br.com.example.juspharus.Dto.Response.ResponseDTO;
+import br.com.example.juspharus.Dto.Response.UsuarioResponseDTO;
+import br.com.example.juspharus.Service.UsuarioService;
 import br.com.example.juspharus.entity.User;
+import br.com.example.juspharus.entity.Usuario;
 import br.com.example.juspharus.repositories.UserRepository;
 import br.com.example.juspharus.security.TokenService;
 import jakarta.validation.Valid;
@@ -28,6 +31,9 @@ public class AuthenticationController {
 
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private UsuarioService usuarioService;
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationRequestDto authenticationRequestDto){
         var userNamePassword = new UsernamePasswordAuthenticationToken(authenticationRequestDto.getLogin() , authenticationRequestDto.getPassword());
@@ -37,11 +43,12 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid RegisterRequestDTO registerRequestDTO){
+    public ResponseEntity register(@RequestBody @Valid RegisterRequestDTO registerRequestDTO) throws Exception {
         if(repository.findByLogin(registerRequestDTO.getLogin()) != null) return ResponseEntity.badRequest().build();
-
+        UsuarioResponseDTO usuarioResponseDTO = usuarioService.salvar(registerRequestDTO.getUsuarioRequestDTO());
+        Usuario usuario = usuarioService.getUsuarioERetornaEntidade(usuarioResponseDTO.getId());
         String encrpytedPassword = new BCryptPasswordEncoder().encode(registerRequestDTO.getPassword());
-        User newUser = new User(registerRequestDTO.getLogin() , encrpytedPassword, registerRequestDTO.getRole());
+        User newUser = new User(registerRequestDTO.getLogin() , encrpytedPassword, registerRequestDTO.getRole() ,usuario);
         repository.save(newUser);
 
         return ResponseEntity.ok().build();

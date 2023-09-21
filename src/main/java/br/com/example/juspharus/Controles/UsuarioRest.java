@@ -13,7 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import br.com.example.juspharus.Dto.Request.UsuarioRequestDTO;
-import br.com.example.juspharus.Dto.Response.ClienteResponseDTO;
+import br.com.example.juspharus.Dto.Response.UsuarioResponseDTO;
 import br.com.example.juspharus.Dto.Response.ResponseDTO;
 import br.com.example.juspharus.Service.UsuarioService;
 
@@ -28,28 +28,27 @@ public class UsuarioRest {
     
     @PostMapping
     @Operation(summary = "Cria um Usuario com perfil de cliente no banco de dados")
-    public ResponseEntity<ClienteResponseDTO> salvar(@RequestBody @Validated UsuarioRequestDTO usuarioRequestDTO){
+    public ResponseEntity<UsuarioResponseDTO> salvar(@RequestBody @Validated UsuarioRequestDTO usuarioRequestDTO){
 
         return ResponseEntity.status(HttpStatus.CREATED).body(service.salvar(usuarioRequestDTO));
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Busca um Usuario a partir de uma ID válida")
-    public ResponseEntity<ClienteResponseDTO> getUsuario(@PathVariable("id") Long clienteId) throws Exception {
+    public ResponseEntity<UsuarioResponseDTO> getUsuario(@PathVariable("id") Long clienteId) throws Exception {
         System.out.println(SecurityContextHolder.getContext().getAuthentication());
-        jwt.get
-        return ResponseEntity.ok(service.getUsuario(clienteId));
+        return ResponseEntity.ok(service.getUsuarioEretornaDTO(clienteId));
     }
 
     @GetMapping(value = "/pagination")
     @Operation(summary = "Mostra uma paginação de todos os Usuarios no Banco de Dados, ordenado por ordem alfabetica. Aceita parâmetros para controlar a paginação")
-    public Page<ClienteResponseDTO> getAll(@RequestParam(defaultValue = "0") Integer pageNumber , @RequestParam(defaultValue = "10") Integer pagesize){
+    public Page<UsuarioResponseDTO> getAll(@RequestParam(defaultValue = "0") Integer pageNumber , @RequestParam(defaultValue = "10") Integer pagesize){
         return service.getAll(pageNumber , pagesize);
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Atualiza um usuario no banco de dados")
-    public ResponseEntity<ClienteResponseDTO> updateCliente(@RequestBody @Validated UsuarioRequestDTO usuarioRequestDTO, @PathVariable Long id ) throws Exception{
+    public ResponseEntity<UsuarioResponseDTO> updateCliente(@RequestBody @Validated UsuarioRequestDTO usuarioRequestDTO, @PathVariable Long id ) throws Exception{
         return ResponseEntity.ok(service.updateCliente(id, usuarioRequestDTO));
     }
 

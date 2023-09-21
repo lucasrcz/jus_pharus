@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ClienteResponseDTO {
+public class UsuarioResponseDTO {
     
     public Long id;
 
@@ -38,7 +38,7 @@ public class ClienteResponseDTO {
 
     private String perfil;
 
-    public ClienteResponseDTO(Usuario usuario){
+    public UsuarioResponseDTO(Usuario usuario){
         this.id = usuario.getId();
         this.nome= usuario.getNome();
         this.birthdayDate = usuario.getBirthdayDate();
