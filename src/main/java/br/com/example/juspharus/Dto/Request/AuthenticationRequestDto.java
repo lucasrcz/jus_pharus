@@ -17,6 +17,4 @@ public class AuthenticationRequestDto {
 
     String password;
 
-    @Enumerated(EnumType.STRING)
-    UserRole role;
 }

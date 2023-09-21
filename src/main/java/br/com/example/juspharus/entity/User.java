@@ -33,10 +33,10 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    public User(String login, String password, String role) {
+    public User(String login, String password, UserRole role) {
         this.login = login;
         this.password = password;
-        this.role = UserRole.valueOf(role);
+        this.role = role;
     }
 
     @Override

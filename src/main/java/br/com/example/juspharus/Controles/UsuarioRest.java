@@ -32,9 +32,9 @@ public class UsuarioRest {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.salvar(usuarioRequestDTO));
     }
 
-    @GetMapping
+    @GetMapping("/{id}")
     @Operation(summary = "Busca um Usuario a partir de uma ID válida")
-    public ResponseEntity<ClienteResponseDTO> getUsuario(@RequestParam Long clienteId) throws Exception {
+    public ResponseEntity<ClienteResponseDTO> getUsuario(@PathVariable Long clienteId) throws Exception {
         return ResponseEntity.ok(service.getUsuario(clienteId));
     }
 
@@ -44,27 +44,27 @@ public class UsuarioRest {
         return service.getAll(pageNumber , pagesize);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @Operation(summary = "Atualiza um usuario no banco de dados")
-    public ResponseEntity<ClienteResponseDTO> updateCliente(@RequestBody @Validated UsuarioRequestDTO usuarioRequestDTO, @RequestParam Long id ) throws Exception{
+    public ResponseEntity<ClienteResponseDTO> updateCliente(@RequestBody @Validated UsuarioRequestDTO usuarioRequestDTO, @PathVariable Long id ) throws Exception{
         return ResponseEntity.ok(service.updateCliente(id, usuarioRequestDTO));
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @Operation(summary = "Deleta Usuario baseado em uma ID")
-    public ResponseEntity<ResponseDTO> deleteCliente(@RequestParam Long id) throws Exception{
+    public ResponseEntity<ResponseDTO> deleteCliente(@PathVariable Long id) throws Exception{
         return ResponseEntity.ok(service.deleteCliente(id));
     }
 
-    @PutMapping(value = "/endereco")
+    @PutMapping(value = "{id}/endereco")
     @Operation(summary = "Cria um novo endereço relacionado a um cliente especifico")
-    public ResponseEntity<EnderecoResponseDTO> updateEndereco(@RequestBody @Validated EnderecoRequestDto enderecoRequestDto , @RequestParam Long id) throws Exception{
+    public ResponseEntity<EnderecoResponseDTO> updateEndereco(@RequestBody @Validated EnderecoRequestDto enderecoRequestDto , @PathVariable Long id) throws Exception{
         return ResponseEntity.ok(service.updateEndereco(id, enderecoRequestDto));
     }
 
-    @DeleteMapping(value = "/endereco/delete")
+    @DeleteMapping(value = "{id}/endereco/delete")
     @Operation(summary = "Delete um endereço de um usuario específico")
-    public ResponseEntity<ResponseDTO> deleteEndereco(@RequestParam Long id)throws Exception{
+    public ResponseEntity<ResponseDTO> deleteEndereco(@PathVariable Long id)throws Exception{
         return ResponseEntity.ok(service.deleteEndereco(id));
     }
 }
