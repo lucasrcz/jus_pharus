@@ -45,7 +45,7 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid RegisterRequestDTO registerRequestDTO) throws Exception {
         if(repository.findByLogin(registerRequestDTO.getLogin()) != null) return ResponseEntity.badRequest().build();
-        UsuarioResponseDTO usuarioResponseDTO = usuarioService.salvar(registerRequestDTO.getUsuarioRequestDTO());
+        UsuarioResponseDTO usuarioResponseDTO = usuarioService.primeiroSalvar(registerRequestDTO.getUsuarioRequestDTO());
         Usuario usuario = usuarioService.getUsuarioERetornaEntidade(usuarioResponseDTO.getId());
         String encrpytedPassword = new BCryptPasswordEncoder().encode(registerRequestDTO.getPassword());
         User newUser = new User(registerRequestDTO.getLogin() , encrpytedPassword, registerRequestDTO.getRole() ,usuario);

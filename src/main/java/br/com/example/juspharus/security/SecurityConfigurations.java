@@ -4,6 +4,7 @@ package br.com.example.juspharus.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -34,7 +35,8 @@ public class SecurityConfigurations {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(mvcMatcherBuilder.pattern("/auth/login")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/auth/register")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern("/usuario/**")).hasRole("ADMIN")
+                        .requestMatchers(mvcMatcherBuilder.pattern("/usuario/**")).authenticated()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/usuario/pagination")).hasRole("ADVOGADO")
                         .requestMatchers(mvcMatcherBuilder.pattern("/swagger-ui/**")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/v3/api-docs/**")).permitAll()
                         .anyRequest().authenticated())

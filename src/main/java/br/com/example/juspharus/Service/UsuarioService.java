@@ -1,5 +1,6 @@
 package br.com.example.juspharus.Service;
 
+import br.com.example.juspharus.entity.User;
 import br.com.example.juspharus.enums.UserRole;
 import br.com.example.juspharus.repositories.EnderecoRepository;
 import jakarta.transaction.Transactional;
@@ -9,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import br.com.example.juspharus.Dto.Request.UsuarioRequestDTO;
@@ -20,6 +23,7 @@ import br.com.example.juspharus.entity.Usuario;
 import br.com.example.juspharus.entity.Endereco;
 import br.com.example.juspharus.repositories.UsuarioRepository;
 
+import java.util.Objects;
 
 
 @Service
@@ -32,21 +36,38 @@ public class UsuarioService {
     EnderecoRepository enderecoRepository;
 
     @Transactional
-    public UsuarioResponseDTO salvar(UsuarioRequestDTO usuarioRequestDTO){
-        Usuario usuario = new Usuario();
-        if(usuarioRequestDTO.getEndereco() != null){
-            usuario.setEndereco(converterEnderecoRequestEmEndereco(usuarioRequestDTO.getEndereco()));
+    public UsuarioResponseDTO salvar(UsuarioRequestDTO usuarioRequestDTO) throws Exception {
+        if(buscaUsuarioPelaAutenticacao().getRole().getValue().equals("ADMIN")){
+            Usuario usuario = converteClienteDTORequestemCliente(usuarioRequestDTO);
+            Endereco endereco = null;
+            if (usuarioRequestDTO.getEndereco() != null) {
+                endereco = enderecoRepository.save(converterEnderecoRequestEmEndereco(usuarioRequestDTO.getEndereco()));
+            }
+            usuario.setEndereco(endereco);
+            repository.save(usuario);
+            return new UsuarioResponseDTO(usuario);
+        }else{
+            throw new Exception("Perfil não tem autorização para criar novo Usuário");
         }
-        usuario = converteClienteDTORequestemCliente(usuarioRequestDTO);
+    }
+
+    @Transactional
+    public UsuarioResponseDTO primeiroSalvar(UsuarioRequestDTO usuarioRequestDTO) throws Exception {
+
+        Usuario usuario = converteClienteDTORequestemCliente(usuarioRequestDTO);
+        Endereco endereco = null;
+        if (usuarioRequestDTO.getEndereco() != null) {
+            endereco = enderecoRepository.save(converterEnderecoRequestEmEndereco(usuarioRequestDTO.getEndereco()));
+        }
+        usuario.setEndereco(endereco);
         repository.save(usuario);
-        
         return new UsuarioResponseDTO(usuario);
-        
     }
 
 
-    public UsuarioResponseDTO getUsuarioEretornaDTO(Long clienteId) throws Exception {
-       Usuario usuario =  repository.findById(clienteId).orElseThrow(() -> new Exception("Digite uma id válida, Usuario não encontrado"));
+    public UsuarioResponseDTO getUsuarioById(Long clienteId) throws Exception {
+        validaPermisaoUsuario(clienteId);
+        Usuario usuario =  repository.findById(clienteId).orElseThrow(() -> new Exception("Digite uma id válida, Usuario não encontrado"));
        return new UsuarioResponseDTO(usuario);
     }
 
@@ -54,13 +75,18 @@ public class UsuarioService {
         return repository.findById(clienteId).orElseThrow(() -> new Exception("Digite uma id válida, Usuario não encontrado"));
     }
 
-    public Page<UsuarioResponseDTO> getAll(Integer pageNumber, Integer pageSize){
+    public Page<UsuarioResponseDTO> getAll(Integer pageNumber, Integer pageSize) throws Exception {
+        if(buscaUsuarioPelaAutenticacao().getAuthorities().contains(UserRole.ADVOGADO)||buscaUsuarioPelaAutenticacao().getAuthorities().contains(UserRole.ADMIN)){
         Pageable pageable= PageRequest.of(pageNumber , pageSize , Sort.by("nome"));
         return repository.findAll(pageable).map(UsuarioResponseDTO::new);
+        }else{
+            throw new Exception("Usuário não tem autorização");
+        }
     }
 
     @Transactional
     public UsuarioResponseDTO updateCliente(Long id, UsuarioRequestDTO usuarioRequestDTO) throws Exception{
+        validaPermisaoUsuario(id);
         Usuario usuario =  repository.findById(id).orElseThrow(() -> new Exception("Digite uma id válida, Usuario não encontrado"));
         usuario.setNome(usuarioRequestDTO.getNome());
         usuario.setTelefone(usuarioRequestDTO.getTelefone());
@@ -73,6 +99,7 @@ public class UsuarioService {
 
     @Transactional
     public EnderecoResponseDTO updateEndereco(Long id , EnderecoRequestDto enderecoRequestDto)throws Exception{
+        validaPermisaoUsuario(id);
         Usuario usuario =  repository.findById(id).orElseThrow(() -> new Exception("Digite uma id válida, Usuario não encontrado"));
         Endereco endereco = converterEnderecoRequestEmEndereco(enderecoRequestDto);
         usuario.setEndereco(endereco);
@@ -83,6 +110,7 @@ public class UsuarioService {
 
 
     public ResponseDTO deleteEndereco(Long id)throws Exception{
+        validaPermisaoUsuario(id);
         Usuario usuario =  repository.findById(id).orElseThrow(() -> new Exception("Digite uma id válida, cliente não encontrado"));
         try {
             enderecoRepository.delete(usuario.getEndereco());
@@ -95,9 +123,8 @@ public class UsuarioService {
 
     @Transactional
     public ResponseDTO deleteCliente(Long id) throws Exception{
-    
+        validaPermisaoUsuario(id);
         repository.deleteById(id);
-        
         return new ResponseDTO("Cliente excluido com sucesso");
     }
 
@@ -109,6 +136,7 @@ public class UsuarioService {
         usuario.setTelefone(usuarioRequestDTO.getTelefone());
         usuario.setTelefone2(usuarioRequestDTO.getTelefone2());
         usuario.setUserRole(UserRole.valueOf(usuarioRequestDTO.getPerfilEnum()));
+
         return usuario;
     }
 
@@ -120,5 +148,21 @@ public class UsuarioService {
         endereco.setCep(enderecoRequestDto.getCep());
         return endereco;
 
+    }
+
+    public User buscaUsuarioPelaAutenticacao() throws Exception {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication != null && authentication.isAuthenticated()){
+            return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        }else{
+            throw new Exception("Usuário não autenticado");
+        }
+
+    }
+    public boolean validaPermisaoUsuario(Long id) throws Exception {
+        if(Objects.equals(buscaUsuarioPelaAutenticacao().getUsuario().getId(), id) || buscaUsuarioPelaAutenticacao().getRole().getValue().equals("ADMIN")) return true;
+        else{
+            throw new Exception("Usuário não autenticado");
+        }
     }
 }
