@@ -1,0 +1,19 @@
+{
+  "login": "lucas.catunda2",
+  "password": "1234",
+  "role": "ADMIN",
+  "usuarioRequestDTO": {
+    "nome": "Lucas Catunda",
+    "birthdayDate": "06/05/1995",
+    "identificacao": "999.999.999-99",
+    "telefone": "99999-9999",
+    "telefone2": "8888-8888",
+    "endereco": {
+      "rua": "Rua nova",
+      "numero": 70,
+      "complemento": "apto 300",
+      "cep": "66035-385"
+    },
+    "perfilEnum": "ADMIN"
+  }
+}
