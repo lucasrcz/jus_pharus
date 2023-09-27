@@ -35,6 +35,7 @@ public class UsuarioService {
     @Autowired
     EnderecoRepository enderecoRepository;
 
+
     @Transactional
     public UsuarioResponseDTO salvar(UsuarioRequestDTO usuarioRequestDTO) throws Exception {
         if(buscaUsuarioPelaAutenticacao().getRole().getValue().equals("ADMIN")){
@@ -66,7 +67,7 @@ public class UsuarioService {
 
 
     public UsuarioResponseDTO getUsuarioById(Long clienteId) throws Exception {
-        validaPermisaoUsuario(clienteId);
+        validaPermissaoUsuario(clienteId);
         Usuario usuario =  repository.findById(clienteId).orElseThrow(() -> new Exception("Digite uma id válida, Usuario não encontrado"));
        return new UsuarioResponseDTO(usuario);
     }
@@ -86,7 +87,7 @@ public class UsuarioService {
 
     @Transactional
     public UsuarioResponseDTO updateCliente(Long id, UsuarioRequestDTO usuarioRequestDTO) throws Exception{
-        validaPermisaoUsuario(id);
+        validaPermissaoUsuario(id);
         Usuario usuario =  repository.findById(id).orElseThrow(() -> new Exception("Digite uma id válida, Usuario não encontrado"));
         usuario.setNome(usuarioRequestDTO.getNome());
         usuario.setTelefone(usuarioRequestDTO.getTelefone());
@@ -99,7 +100,7 @@ public class UsuarioService {
 
     @Transactional
     public EnderecoResponseDTO updateEndereco(Long id , EnderecoRequestDto enderecoRequestDto)throws Exception{
-        validaPermisaoUsuario(id);
+        validaPermissaoUsuario(id);
         Usuario usuario =  repository.findById(id).orElseThrow(() -> new Exception("Digite uma id válida, Usuario não encontrado"));
         Endereco endereco = converterEnderecoRequestEmEndereco(enderecoRequestDto);
         usuario.setEndereco(endereco);
@@ -110,7 +111,7 @@ public class UsuarioService {
 
 
     public ResponseDTO deleteEndereco(Long id)throws Exception{
-        validaPermisaoUsuario(id);
+        validaPermissaoUsuario(id);
         Usuario usuario =  repository.findById(id).orElseThrow(() -> new Exception("Digite uma id válida, cliente não encontrado"));
         try {
             enderecoRepository.delete(usuario.getEndereco());
@@ -123,7 +124,7 @@ public class UsuarioService {
 
     @Transactional
     public ResponseDTO deleteCliente(Long id) throws Exception{
-        validaPermisaoUsuario(id);
+        validaPermissaoUsuario(id);
         repository.deleteById(id);
         return new ResponseDTO("Cliente excluido com sucesso");
     }
@@ -159,7 +160,7 @@ public class UsuarioService {
         }
 
     }
-    public boolean validaPermisaoUsuario(Long id) throws Exception {
+    public boolean validaPermissaoUsuario(Long id) throws Exception {
         if(Objects.equals(buscaUsuarioPelaAutenticacao().getUsuario().getId(), id) || buscaUsuarioPelaAutenticacao().getRole().getValue().equals("ADMIN")) return true;
         else{
             throw new Exception("Usuário não autenticado");
