@@ -8,4 +8,5 @@ import br.com.example.juspharus.entity.Usuario;
 
 public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
 
+
 }

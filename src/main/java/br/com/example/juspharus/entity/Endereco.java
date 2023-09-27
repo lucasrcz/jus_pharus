@@ -10,6 +10,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "enderecos")
@@ -31,6 +32,18 @@ public class Endereco {
     public String cep;
     @OneToOne
     @MapsId
-    @JoinColumn(name = "usuario_id")
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
     public Usuario usuario;
+
+    @Override
+    public String toString() {
+        return "Endereco{" +
+                "id=" + id +
+                ", rua='" + rua + '\'' +
+                ", numero=" + numero +
+                ", complemento='" + complemento + '\'' +
+                ", cep='" + cep + '\'' +
+                ", usuario=" + usuario +
+                '}';
+    }
 }

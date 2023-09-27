@@ -1,5 +1,5 @@
 {
-  "login": "lucas.catunda2",
+  "login": "lucas.catunda",
   "password": "1234",
   "role": "ADMIN",
   "usuarioRequestDTO": {

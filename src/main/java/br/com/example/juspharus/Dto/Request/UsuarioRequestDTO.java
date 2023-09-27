@@ -34,7 +34,4 @@ public class    UsuarioRequestDTO {
     private String telefone2;
 
     private EnderecoRequestDto endereco;
-
-    @NotBlank(message = "Perfil deve ser declarado")
-    private String perfilEnum;
 }

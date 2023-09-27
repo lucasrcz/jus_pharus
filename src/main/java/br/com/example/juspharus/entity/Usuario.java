@@ -8,17 +8,17 @@ import java.util.Date;
 
 import br.com.example.juspharus.enums.UserRole;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SourceType;
 
 @Entity
 @Table(name = "usuarios")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class Usuario {
     
     @Id
@@ -45,12 +45,20 @@ public class Usuario {
     @Column(name = "telefone2" , length = 50)
     private String telefone2;
 
-    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "usuario", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @PrimaryKeyJoinColumn
     private Endereco endereco;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "perfil")
-    private UserRole userRole;
-
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", creationDate=" + creationDate +
+                ", birthdayDate=" + birthdayDate +
+                ", identificacao='" + identificacao + '\'' +
+                ", telefone='" + telefone + '\'' +
+                ", telefone2='" + telefone2 + '\'' +
+                '}';
+    }
 }

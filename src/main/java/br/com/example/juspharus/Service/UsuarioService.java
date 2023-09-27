@@ -36,33 +36,23 @@ public class UsuarioService {
     EnderecoRepository enderecoRepository;
 
 
-    @Transactional
+
     public UsuarioResponseDTO salvar(UsuarioRequestDTO usuarioRequestDTO) throws Exception {
         if(buscaUsuarioPelaAutenticacao().getRole().getValue().equals("ADMIN")){
             Usuario usuario = converteClienteDTORequestemCliente(usuarioRequestDTO);
-            Endereco endereco = null;
-            if (usuarioRequestDTO.getEndereco() != null) {
-                endereco = enderecoRepository.save(converterEnderecoRequestEmEndereco(usuarioRequestDTO.getEndereco()));
-            }
-            usuario.setEndereco(endereco);
-            repository.save(usuario);
-            return new UsuarioResponseDTO(usuario);
+            Usuario saved = repository.save(usuario);
+            return new UsuarioResponseDTO(saved);
         }else{
             throw new Exception("Perfil não tem autorização para criar novo Usuário");
         }
     }
 
-    @Transactional
-    public UsuarioResponseDTO primeiroSalvar(UsuarioRequestDTO usuarioRequestDTO) throws Exception {
+
+    public UsuarioResponseDTO salvarRegistro(UsuarioRequestDTO usuarioRequestDTO) throws Exception {
 
         Usuario usuario = converteClienteDTORequestemCliente(usuarioRequestDTO);
-        Endereco endereco = null;
-        if (usuarioRequestDTO.getEndereco() != null) {
-            endereco = enderecoRepository.save(converterEnderecoRequestEmEndereco(usuarioRequestDTO.getEndereco()));
-        }
-        usuario.setEndereco(endereco);
-        repository.save(usuario);
-        return new UsuarioResponseDTO(usuario);
+        Usuario saved = repository.save(usuario);
+        return new UsuarioResponseDTO(saved);
     }
 
 
@@ -136,7 +126,12 @@ public class UsuarioService {
         usuario.setBirthdayDate(usuarioRequestDTO.getBirthdayDate());
         usuario.setTelefone(usuarioRequestDTO.getTelefone());
         usuario.setTelefone2(usuarioRequestDTO.getTelefone2());
-        usuario.setUserRole(UserRole.valueOf(usuarioRequestDTO.getPerfilEnum()));
+        if(usuarioRequestDTO.getEndereco() == null){
+                usuario.setEndereco(new Endereco());
+        }else{
+        usuario.setEndereco(converterEnderecoRequestEmEndereco(usuarioRequestDTO.getEndereco()));
+        usuario.getEndereco().setUsuario(usuario);
+        }
 
         return usuario;
     }
@@ -161,9 +156,10 @@ public class UsuarioService {
 
     }
     public boolean validaPermissaoUsuario(Long id) throws Exception {
-        if(Objects.equals(buscaUsuarioPelaAutenticacao().getUsuario().getId(), id) || buscaUsuarioPelaAutenticacao().getRole().getValue().equals("ADMIN")) return true;
+        User user = buscaUsuarioPelaAutenticacao();
+        if(Objects.equals(user.getUsuario().getId(), id) || user.getRole().getValue().equals("ADMIN")) return true;
         else{
-            throw new Exception("Usuário não autenticado");
+            throw new Exception("Usuário não autorizado");
         }
     }
 }

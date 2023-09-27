@@ -36,8 +36,6 @@ public class UsuarioResponseDTO {
 
     private EnderecoResponseDTO endereco;
 
-    private String perfil;
-
     public UsuarioResponseDTO(Usuario usuario){
         this.id = usuario.getId();
         this.nome= usuario.getNome();
@@ -49,7 +47,6 @@ public class UsuarioResponseDTO {
         if(usuario.getEndereco() != null){
             this.endereco = new EnderecoResponseDTO(usuario.getEndereco());
         }
-        this.perfil = usuario.getUserRole().getValue();
     }
 }
 
