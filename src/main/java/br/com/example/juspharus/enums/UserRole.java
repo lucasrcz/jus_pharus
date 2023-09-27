@@ -7,13 +7,13 @@ public enum UserRole {
     ADVOGADO("ADVOGADO"),
     ADMIN("ADMIN");
 
-    private final String role;
+    private final String value;
 
     private UserRole(String value) {
-        this.role = value;
+        this.value = value;
     }
 
-    public String getRole() {
-        return role;
+    public String getValue() {
+        return value;
     }
 }

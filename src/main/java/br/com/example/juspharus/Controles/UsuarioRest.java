@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +27,7 @@ public class UsuarioRest {
     
     @PostMapping
     @Operation(summary = "Cria um Usuario com perfil de cliente no banco de dados")
-    public ResponseEntity<UsuarioResponseDTO> salvar(@RequestBody @Validated UsuarioRequestDTO usuarioRequestDTO){
+    public ResponseEntity<UsuarioResponseDTO> salvar(@RequestBody @Validated UsuarioRequestDTO usuarioRequestDTO) throws Exception {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(service.salvar(usuarioRequestDTO));
     }
@@ -36,13 +35,13 @@ public class UsuarioRest {
     @GetMapping("/{id}")
     @Operation(summary = "Busca um Usuario a partir de uma ID válida")
     public ResponseEntity<UsuarioResponseDTO> getUsuario(@PathVariable("id") Long clienteId) throws Exception {
-        System.out.println(SecurityContextHolder.getContext().getAuthentication());
-        return ResponseEntity.ok(service.getUsuarioEretornaDTO(clienteId));
+
+        return ResponseEntity.ok(service.getUsuarioById(clienteId));
     }
 
     @GetMapping(value = "/pagination")
     @Operation(summary = "Mostra uma paginação de todos os Usuarios no Banco de Dados, ordenado por ordem alfabetica. Aceita parâmetros para controlar a paginação")
-    public Page<UsuarioResponseDTO> getAll(@RequestParam(defaultValue = "0") Integer pageNumber , @RequestParam(defaultValue = "10") Integer pagesize){
+    public Page<UsuarioResponseDTO> getAll(@RequestParam(defaultValue = "0") Integer pageNumber , @RequestParam(defaultValue = "10") Integer pagesize) throws Exception {
         return service.getAll(pageNumber , pagesize);
     }
 
